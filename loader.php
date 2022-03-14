@@ -242,11 +242,13 @@ $daily_table->id = 'realized_pnl_daily';
 $daily_table->thead()
 ->th('Start')
 ->th('End')
-->th('Balance')
+->th('Balance start')
+->th('Balance end')
 ->th('Unrealized PnL')
 ->th('Transfer in')
 ->th('Transfer out')
-->th('Profit');
+->th('Profit')
+->th('Profit %');
 
 foreach ($result as $key => $res) {
 
@@ -288,11 +290,13 @@ foreach ($result as $key => $res) {
     $daily_table->tr()
     ->td($start_time)
     ->td($end_time)
+    ->td(number_format( $wallet_balance_start , 2))
     ->td(number_format( $wallet_balance_end , 2))
     ->td(number_format( $unrealized_pnl , 2))
     ->td(number_format( $transfer_in , 2))
     ->td(number_format( $transfer_out , 2))
-    ->td(number_format( $profit , 2));
+    ->td(number_format( $profit , 2))
+    ->td( number_format( (($profit / $wallet_balance_start) * 100 ) , 2).'%');
 }
 
 /**
