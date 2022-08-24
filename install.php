@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 include ('app/Config.php');
 include ('app/Core.php');
 include ('app/DataMapper.php');
-include ('app/functions.php');
+//include ('app/functions.php');
 
 if (empty(DB_DBNAME) OR DB_DBNAME == 'your_database_name') {
     echo '<h1> Database name not set , please change Config.php to correct settings.</h1>';
