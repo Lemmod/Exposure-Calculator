@@ -90,18 +90,21 @@ foreach ($accounts as $account) {
         //echo 'wallet_balance = '.$total_wallet.'<br />';
         //echo 'unrealized_pnl = '.$total_unrealized.'<br />';
 
-        $transfers = $bybit->get_transfers(['coin' => 'USDT' , 'start_time' => (int) ($start_time['time'] / 1000)]);
-
+        $transfers = $bybit->get_transfers(['coin' => 'USDT']);
         $transfer_in = 0;
         $transfer_out = 0;
         foreach($transfers['result']['list'] as $transfer) {
-            // From Contract (Deriv) to spot is out
-            if($transfer['from_account_type'] == 'CONTRACT' && $transfer['to_account_type'] == 'SPOT' && $transfer['status'] == 'SUCCESS') {
-                $transfer_out += $transfer['amount'];
-            }
-            // From Spot to Contract is in
-            if($transfer['from_account_type'] == 'SPOT' && $transfer['to_account_type'] == 'CONTRACT'  && $transfer['status'] == 'SUCCESS') {
-                $transfer_in += $transfer['amount'];
+
+            if($transfer['timestamp'] >= (($start_time['time'] / 1000))) {
+
+                // From Contract (Deriv) to spot is out
+                if($transfer['from_account_type'] == 'CONTRACT' && $transfer['to_account_type'] == 'SPOT' && $transfer['status'] == 'SUCCESS') {
+                    $transfer_out += $transfer['amount'];
+                }
+                // From Spot to Contract is in
+                if($transfer['from_account_type'] == 'SPOT' && $transfer['to_account_type'] == 'CONTRACT'  && $transfer['status'] == 'SUCCESS') {
+                    $transfer_in += $transfer['amount'];
+                }
             }
         }  
 
